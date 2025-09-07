@@ -1,5 +1,6 @@
 #include "list.h"
 #include "stdio.h"
+#include "portmacro.h"
 void vListInitialistItem(ListItem_t* const pxItem)
 {
     pxItem->pxContainer = NULL;
@@ -7,19 +8,19 @@ void vListInitialistItem(ListItem_t* const pxItem)
 
 
 /*
-*************************¸ù½Úµã³õÊ¼»¯º¯Êý*****************************
-* @param pxList ¸ù½ÚµãÖ¸Õë
+*************************ï¿½ï¿½ï¿½Úµï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½*****************************
+* @param pxList ï¿½ï¿½ï¿½Úµï¿½Ö¸ï¿½ï¿½
 * @author wanglianghua
 */
 void vListInitialise(List_t* const pxList)
 {
-	/* ½«Á´±íË÷ÒýÖ¸ÕëÖ¸Ïò×îºóÒ»¸ö½Úµã */
+	/* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½Ö¸ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½Úµï¿½ */
 	pxList->pxIndex = (ListItem_t*)(&(pxList->xListEnd));
 
-	/* ½«Á´±í×îºóÒ»¸ö½ÚµãµÄ¸¨ÖúÅÅÐòµÄÖµÉèÖÃÎª×î´ó£¬È·±£¸Ã½Úµã¾ÍÊÇÁ´±íµÄ×îºó½Úµã */
-	pxList->xListEnd.xItemValue = 20;
+	/* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½Úµï¿½Ä¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öµï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½ï¿½È·ï¿½ï¿½ï¿½Ã½Úµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Úµï¿½ */
+	pxList->xListEnd.xItemValue = portMAX_DELAY;
 
-	/* ½«×îºóÒ»¸ö½ÚµãµÄpxNext ºÍpxPrevious Ö¸Õë¾ùÖ¸Ïò½Úµã×ÔÉí£¬±íÊ¾Á´±íÎª¿Õ */
+	/* ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½Úµï¿½ï¿½pxNext ï¿½ï¿½pxPrevious Ö¸ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½Úµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½ */
 	pxList->xListEnd.pxNext = (ListItem_t*)(&(pxList->xListEnd));
 	pxList->xListEnd.pxPrev = (ListItem_t*)(&(pxList->xListEnd));
 
@@ -28,9 +29,9 @@ void vListInitialise(List_t* const pxList)
 
 
 /*
-****************************½Úµã²åÈëº¯Êý***********************************
-* @param pxList ¸ù½ÚµãÖ¸Õë
-* @param pxNewListItem ÐÂ²åÈë½ÚµãÖ¸Õë
+****************************ï¿½Úµï¿½ï¿½ï¿½ëº¯ï¿½ï¿½***********************************
+* @param pxList ï¿½ï¿½ï¿½Úµï¿½Ö¸ï¿½ï¿½
+* @param pxNewListItem ï¿½Â²ï¿½ï¿½ï¿½Úµï¿½Ö¸ï¿½ï¿½
 * @author wanglianghua
 */
 void vListInsertEnd(List_t* const pxList, ListItem_t* const pxNewListItem)
@@ -49,16 +50,16 @@ void vListInsertEnd(List_t* const pxList, ListItem_t* const pxNewListItem)
 
 
 /*
-****************************½ÚµãÉýÐòÅÅÁÐ²åÈë***********************************
-* @param pxList ¸ù½ÚµãÖ¸Õë
-* @param pxNewListItem ÐÂ²åÈë½ÚµãÖ¸Õë
+****************************ï¿½Úµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð²ï¿½ï¿½ï¿½***********************************
+* @param pxList ï¿½ï¿½ï¿½Úµï¿½Ö¸ï¿½ï¿½
+* @param pxNewListItem ï¿½Â²ï¿½ï¿½ï¿½Úµï¿½Ö¸ï¿½ï¿½
 * @author wanglianghua
 */
 void vListInsert(List_t* const pxList, ListItem_t* const pxNewListItem)
 {
 	ListItem_t* pxIterator;
 	uint16_t curIndex = pxNewListItem->NodeTick;
-	if (curIndex == 20)
+	if (curIndex == portMAX_DELAY)
 	{
 		pxIterator = pxList->xListEnd.pxPrev;
 	}
@@ -83,10 +84,10 @@ void vListInsert(List_t* const pxList, ListItem_t* const pxNewListItem)
 
 
 /*
-****************************½«½Úµã´ÓÁ´±íÉ¾³ý***********************************
-* @param pxList ¸ù½ÚµãÖ¸Õë
-* @param pxNewListItem ÐÂ²åÈë½ÚµãÖ¸Õë
-* @return Ê£Óà½Úµã¸öÊý
+****************************ï¿½ï¿½ï¿½Úµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É¾ï¿½ï¿½***********************************
+* @param pxList ï¿½ï¿½ï¿½Úµï¿½Ö¸ï¿½ï¿½
+* @param pxNewListItem ï¿½Â²ï¿½ï¿½ï¿½Úµï¿½Ö¸ï¿½ï¿½
+* @return Ê£ï¿½ï¿½Úµï¿½ï¿½ï¿½ï¿½
 * @author wanglianghua
 */
 uint16_t vListDelet(ListItem_t* const pxItemToDelet)
@@ -102,7 +103,7 @@ uint16_t vListDelet(ListItem_t* const pxItemToDelet)
 
 	pxItemToDelet->pxContainer = NULL;
 
-    pxList->uxNumberOfItems--;
+    (pxList->uxNumberOfItems)--;
 
 	return pxList->uxNumberOfItems;
 }
